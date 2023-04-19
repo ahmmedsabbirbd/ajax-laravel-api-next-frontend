@@ -24,9 +24,8 @@ const  Page = (props) => {
 
             <meta name="description" content={singleUser.name}/>
             <meta name="keyword" content="website description"/>
-            <meta name="authot" content="Sabbir ahmmed"/>
-        </Head>
-        <Head>
+            <meta name="author" content="Sabbir ahmmed"/>
+            
             <meta property="og:title" content={singleUser.name} key={singleUser.name} />
 
             <meta property="og:site_name" content={singleUser.name} key={singleUser.name}/>
