@@ -36,7 +36,13 @@ const  Page = (props) => {
 
         <div>
             {
-                // data.data.map(user=> <SingleUser key={user.id} user={user} />)
+              (error) && <div>Failed to load</div>
+            }
+            {
+              (!error) && (!data) && <div>Loading...</div>
+            }
+            {
+              ((!error) && (data)) && (data.data.map(user=> <SingleUser key={user.id} user={user} />))
             }
         </div>
 
