@@ -1,124 +1,284 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
+import axios from 'axios';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
+  function simpleGet() {
+    fetch('http://127.0.0.1:8000/api/ajax/get')
+        .then(r => r.text())
+        .then(data => {
+            console.log(data)
+        })
+  }
+
+  function getJSON() {
+      fetch('http://127.0.0.1:8000/api/ajax/getJSON')
+          .then(r => r.json())
+          .then(data => {
+              console.log(data)
+              console.log(data.email)
+          })
+  }
+
+  function sendHeader() {
+      fetch('http://127.0.0.1:8000/api/ajax/getHeader', {
+          headers: {
+              CustomHeader: '123',
+              myPersonalValue: 'kire sala'
+          }
+      })
+          .then(r => r.json())
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function errorCheck() {
+      fetch('http://127.0.0.1:8000/api/ajax/getData/2')
+          .then(r => {
+              return {
+                  json: r.json(),
+                  ok: r.ok,
+                  status: r.status
+              }
+          })
+          .then((data) => {
+              console.log(data)
+          })
+  }
+
+  function postRequest() {
+      fetch('http://127.0.0.1:8000/api/ajax/post', {
+          method: 'POST',
+          body: JSON.stringify(
+              {
+                  name: 'John Doe',
+                  age: 20
+              }
+          ),
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+          .then(r => r.json())
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function putRequest() {
+      fetch('http://127.0.0.1:8000/api/ajax/put/1', {
+          method: 'PUT',
+          body: JSON.stringify({
+              name: 'John c',
+              age: 20
+          }),
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+          .then(r => r.json())
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function deleteRequest() {
+      fetch('http://127.0.0.1:8000/api/ajax/delete/1', {
+          method: 'DELETE',
+          headers: {
+              "Content-Type": "application/json"
+          }
+      })
+          .then(r => r.json())
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+
+  //-------------------------
+  function simpleGetAxios() {
+      axios.get("http://127.0.0.1:8000/api/ajax/get")
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function getJSONAxios() {
+      axios.get("http://127.0.0.1:8000/api/ajax/getJSON")
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function errorCheckAxios() {
+      axios.get("http://127.0.0.1:8000/api/ajax/getData/2")
+          .then(data => {
+              console.log(data)
+          })
+          .catch(err => {
+              console.log(err.response.data)
+          })
+  }
+
+  function sendHeaderAxios() {
+      axios.get('http://127.0.0.1:8000/api/ajax/getHeader', {
+          headers: {
+              CustomHeader: '123'
+          }
+      })
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function postRequestAxios() {
+      axios.post('http://127.0.0.1:8000/api/ajax/post', { name: 'John Doe' })
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function putRequestAxios() {
+      axios.put('http://127.0.0.1:8000/api/ajax/put/1', { name: 'John Doe' })
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function patchRequestAxios() {
+      axios.patch('http://127.0.0.1:8000/api/ajax/patch/1', { name: 'John Doe' })
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  function deleteRequestAxios() {
+      axios.delete('http://127.0.0.1:8000/api/ajax/delete/1')
+          .then(data => {
+              console.log(data)
+          })
+  }
+
+  // document.getElementById('submit-button').addEventListener('click', 
+  // function handleForm(event) {
+  //     event.preventDefault()
+  //     const form = document.getElementById('form');
+      
+  //     console.log(Object.fromEntries(new FormData(form)));
+
+  //     const formdata = Object.fromEntries(new FormData(form))
+  //     axios.post('http://127.0.0.1:8000/api/ajax/post', formdata)
+  //         .then(data => {
+  //             console.log(data)
+  //         })
+
+  // })
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div>
+      <div className="navbar bg-base-100">
+        <div className="flex-1">
+          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+        </div>
+
+        <div className="flex-none">
+          <ul className="menu menu-horizontal px-1">
+            <li><Link href="student">Student</Link></li>
+            <li tabIndex={0}>
+              <a>
+                Parent
+                <svg className="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
+              </a>
+              <ul className="p-2 bg-base-100">
+                <li><a>Submenu 1</a></li>
+                <li><a>Submenu 2</a></li>
+              </ul>
+            </li>
+            <li><a>Item 3</a></li>
+          </ul>
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="container mx-auto p-10">
+        <div className="space-y-5 ">
+          <button onClick={ () => simpleGet() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Simple GET (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => getJSON() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            GET JSON (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => errorCheck() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Status Check (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => sendHeader() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Send Header (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => postRequest() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Post (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => putRequest() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Put (Fetch)
+          </button>
+          <br/>
+          <button onClick={ () => deleteRequest() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Delete (Fetch)
+          </button>
+          <hr/>
+          <br/>
+          <button onClick={ () => simpleGetAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Simple GET (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => getJSONAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            GET JSON (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => errorCheckAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Status Check (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => sendHeaderAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Send Header (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => postRequestAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Post (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => putRequestAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Put (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => patchRequestAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Patch (Axios)
+          </button>
+          <br/>
+          <button onClick={ () => deleteRequestAxios() } className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            Delete (Axios)
+          </button>
+          
+          <form action="#" id="form" method="POST">
+            <label htmlFor="name">Name:
+              <input type="text" name="name" id="name" ></input>
+            </label>
+            <label htmlFor="lastname">Last Name:
+              <input type="text" name="lastname" id="lastname"></input>
+            </label>
+          </form>
+          <button id="submit-button" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Submit</button>
+        </div>
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   )
 }

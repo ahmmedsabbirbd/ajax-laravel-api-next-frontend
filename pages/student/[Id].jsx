@@ -18,21 +18,7 @@ const  Page = (props) => {
 
   return (
     <div className='flex'>
-         <Head>
-            <title>{singleUser.name} | Student</title>
-            <meta property="og:title" content={singleUser.name} key={singleUser.name}/>
-
-            <meta name="description" content={singleUser.name}/>
-            <meta name="keyword" content="website description"/>
-            <meta name="author" content="Sabbir ahmmed"/>
-            
-            <meta property="og:title" content={singleUser.name} key={singleUser.name} />
-
-            <meta property="og:site_name" content={singleUser.name} key={singleUser.name}/>
-            <meta property="og:url" content="https://sabbir-me.netlify.app/" />
-            <meta property="og:description" content="website description" />
-            <meta property="og:image" content="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" />
-        </Head>
+         
 
         <div>
             {
@@ -47,7 +33,25 @@ const  Page = (props) => {
         </div>
 
       <div style={{position: 'fixed', left: '30%'}}>
-            <div className="card card-compact w-100 bg-base-100 shadow-xl">
+            {
+              (props.data.status == "404") ? ( <>
+              <Head>
+                <title>Data not Found | Student</title>
+            <meta property="og:title" content="Data not Found" key="Data not Found"/>
+
+            <meta name="description" content="Data not Found"/>
+            <meta name="keyword" content="website description"/>
+            <meta name="author" content="Sabbir ahmmed"/>
+            
+            <meta property="og:title" content="Data not Found" key="Data not Found" />
+
+            <meta property="og:site_name" content="Data not Found" key="Data not Found"/>
+            <meta property="og:url" content="https://sabbir-me.netlify.app/" />
+            <meta property="og:description" content="website description" />
+            <meta property="og:image" content="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" />
+            </Head>
+              
+              <div className="card card-compact w-100 bg-base-100 shadow-xl">
                 <figure>
                 <Image
                   loader={myLoader}
@@ -59,11 +63,43 @@ const  Page = (props) => {
                 </figure>
                 
                 <div className="card-body">
-                    <h2 className="card-title">{singleUser.name}</h2>
-                    <p>{singleUser.course}</p>
-                    <p>{singleUser.phone}</p>
+                    <h2 className="card-title">Data not Found</h2>
                 </div>
             </div>
+            </>) : (<>
+              <Head>
+              <title>{singleUser.name} | Student</title>
+            <meta property="og:title" content={singleUser.name} key={singleUser.name}/>
+
+            <meta name="description" content={singleUser.name}/>
+            <meta name="keyword" content="website description"/>
+            <meta name="author" content="Sabbir ahmmed"/>
+            
+            <meta property="og:title" content={singleUser.name} key={singleUser.name} />
+
+            <meta property="og:site_name" content={singleUser.name} key={singleUser.name}/>
+            <meta property="og:url" content="https://sabbir-me.netlify.app/" />
+            <meta property="og:description" content="website description" />
+            <meta property="og:image" content="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" />
+            </Head>
+            <div className="card card-compact w-100 bg-base-100 shadow-xl">
+                  <figure>
+                  <Image
+                    loader={myLoader}
+                    src="images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                    alt="Picture of the author"
+                    width={500}
+                    height={500}
+                  />  
+                  </figure>
+                  
+                  <div className="card-body">
+                      <h2 className="card-title">{singleUser.name}</h2>
+                      <p>{singleUser.course}</p>
+                      <p>{singleUser.phone}</p>
+                  </div>
+              </div></>)
+            }
       </div>
     </div>
   )
@@ -76,7 +112,9 @@ export async function getServerSideProps({ params }) {
     userId = userId[1];
 
     const res = await fetch(`https://apiv1.mamungroup.net/api/students/${userId}`);
-    const data = await res.json();
+    let data = await res.json();
+
+    (!data) && (data = false);
 
 
     return {
